@@ -24,6 +24,7 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "userthread.h"
 
 #ifdef CHANGED
 
@@ -176,6 +177,20 @@ ExceptionHandler (ExceptionType which)
 			int addr = machine->ReadRegister (4);
 			synchconsole->SynchGetInt(&n);
 			machine->WriteMem(addr, 4, n); // on ecrit 4 octets (taille d'un int)
+			break;
+		}
+		case SC_ThreadCreate:
+		{
+			DEBUG ('s', "threadCreate\n");
+			int f = machine->ReadRegister (4);
+			int arg = machine->ReadRegister (5);
+			do_ThreadCreate(f, arg);
+			break;
+		}
+		case SC_ThreadExit:
+		{
+			DEBUG ('s', "threadExit\n");
+			do_ThreadExit();
 			break;
 		}
 
