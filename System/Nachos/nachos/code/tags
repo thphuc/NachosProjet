@@ -20,6 +20,7 @@ AddrSpace	userprog/addrspace.h	/^class AddrSpace:dontcopythis$/;"	c
 AddressErrorException	machine/machine.h	/^		     AddressErrorException, \/\/ Unaligned reference or one that$/;"	e	enum:ExceptionType
 AllocBoundedArray	machine/sysdep.cc	/^AllocBoundedArray(int size)$/;"	f
 Allocate	filesys/filehdr.cc	/^FileHeader::Allocate(BitMap *freeMap, int fileSize)$/;"	f	class:FileHeader
+AllocateUserStack	userprog/addrspace.cc	/^AddrSpace::AllocateUserStack()$/;"	f	class:AddrSpace
 Append	threads/list.cc	/^List::Append (void *item)$/;"	f	class:List
 Append	threads/synchlist.cc	/^SynchList::Append (void *item)$/;"	f	class:SynchList
 AssignNameToSocket	machine/sysdep.cc	/^AssignNameToSocket(const char *socketName, int sockID)$/;"	f
@@ -56,8 +57,8 @@ Condition	threads/synch.cc	/^Condition::Condition (const char *debugName)$/;"	f	
 Condition	threads/synch.h	/^class Condition:dontcopythis$/;"	c
 Console	machine/console.cc	/^Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvailHandler, $/;"	f	class:Console
 Console	machine/console.h	/^class Console:dontcopythis {$/;"	c
-ConsoleInput	userprog/syscall.h	92;"	d
-ConsoleOutput	userprog/syscall.h	93;"	d
+ConsoleInput	userprog/syscall.h	105;"	d
+ConsoleOutput	userprog/syscall.h	106;"	d
 ConsoleReadInt	machine/interrupt.h	/^enum IntType { TimerInt, DiskInt, ConsoleWriteInt, ConsoleReadInt, $/;"	e	enum:IntType
 ConsoleReadPoll	machine/console.cc	/^static void ConsoleReadPoll(void *c) $/;"	f	file:
 ConsoleTest	userprog/progtest.cc	/^ConsoleTest (const char *in, const char *out)$/;"	f
@@ -135,6 +136,9 @@ FreeMapFileSize	filesys/filesys.cc	64;"	d	file:
 FreeMapSector	filesys/filesys.cc	57;"	d	file:
 Get	network/post.cc	/^MailBox::Get(PacketHeader *pktHdr, MailHeader *mailHdr, void *data) $/;"	f	class:MailBox
 GetChar	machine/console.cc	/^Console::GetChar()$/;"	f	class:Console
+GetChar	test/start.S	/^GetChar:$/;"	l
+GetInt	test/start.S	/^GetInt:$/;"	l
+GetString	test/start.S	/^GetString:$/;"	l
 HI	bin/execute.c	/^int HI, LO;			\/* mul\/div machine registers *\/$/;"	v
 Halt	machine/interrupt.cc	/^Interrupt::Halt()$/;"	f	class:Interrupt
 Halt	test/start.S	/^Halt:$/;"	l
@@ -306,6 +310,7 @@ MAXRELOCS	bin/out.c	31;"	d	file:
 MAXSCNS	bin/out.c	43;"	d	file:
 MAXSSPACE	bin/out.c	45;"	d	file:
 MAXSYMS	bin/out.c	44;"	d	file:
+MAX_STRING_SIZE	threads/system.h	60;"	d
 MEMSIZE	bin/int.h	11;"	d
 MINFRAME	threads/switch.S	/^#define MINFRAME 256$/;"	d
 MIPSELMAGIC	bin/coff.h	15;"	d
@@ -482,6 +487,9 @@ PrintPending	machine/interrupt.cc	/^PrintPending(void *arg)$/;"	f	file:
 PrintSector	machine/disk.cc	/^PrintSector (bool writing, int sector, const void *data)$/;"	f	file:
 Put	network/post.cc	/^MailBox::Put(PacketHeader pktHdr, MailHeader mailHdr, const void *data)$/;"	f	class:MailBox
 PutChar	machine/console.cc	/^Console::PutChar(int ch)$/;"	f	class:Console
+PutChar	test/start.S	/^PutChar:$/;"	l
+PutInt	test/start.S	/^PutInt:$/;"	l
+PutString	test/start.S	/^PutString:$/;"	l
 R	bin/d.c	27;"	d	file:
 R0	threads/switch.h	130;"	d
 R1	threads/switch.h	131;"	d
@@ -527,6 +535,7 @@ ReadAt	filesys/openfile.cc	/^OpenFile::ReadAt(void *into, int numBytes, int posi
 ReadAt	filesys/openfile.h	/^    int ReadAt(void *into, int numBytes, int position) { $/;"	f	class:OpenFile
 ReadAvailHandler	network/post.cc	/^static void ReadAvailHandler(void *arg)$/;"	f	file:
 ReadAvailHandler	userprog/progtest.cc	/^ReadAvailHandler (void *arg)$/;"	f	file:
+ReadAvailHandler	userprog/synchconsole.cc	/^static void ReadAvailHandler(void *arg) { (void) arg; readAvail->V(); }$/;"	f	file:
 ReadFromSocket	machine/sysdep.cc	/^ReadFromSocket(int sockID, void *buffer, int packetSize)$/;"	f
 ReadMem	machine/translate.cc	/^Machine::ReadMem(int addr, int size, int *value)$/;"	f	class:Machine
 ReadOnlyException	machine/machine.h	/^		     ReadOnlyException,     \/\/ Write attempted to page marked $/;"	e	enum:ExceptionType
@@ -586,10 +595,18 @@ SC_Create	userprog/syscall.h	27;"	d
 SC_Exec	userprog/syscall.h	25;"	d
 SC_Exit	userprog/syscall.h	24;"	d
 SC_Fork	userprog/syscall.h	32;"	d
+SC_GetChar	userprog/syscall.h	39;"	d
+SC_GetInt	userprog/syscall.h	42;"	d
+SC_GetString	userprog/syscall.h	40;"	d
 SC_Halt	userprog/syscall.h	23;"	d
 SC_Join	userprog/syscall.h	26;"	d
 SC_Open	userprog/syscall.h	28;"	d
+SC_PutChar	userprog/syscall.h	37;"	d
+SC_PutInt	userprog/syscall.h	41;"	d
+SC_PutString	userprog/syscall.h	38;"	d
 SC_Read	userprog/syscall.h	29;"	d
+SC_ThreadCreate	userprog/syscall.h	43;"	d
+SC_ThreadExit	userprog/syscall.h	44;"	d
 SC_Write	userprog/syscall.h	30;"	d
 SC_Yield	userprog/syscall.h	33;"	d
 SIGN_BIT	machine/mipssim.h	96;"	d
@@ -605,6 +622,7 @@ SWITCH	threads/switch.S	/^SWITCH$/;"	l
 SWITCH	threads/switch.S	/^SWITCH:	$/;"	l
 SWITCH	threads/switch.S	/^SWITCH:$/;"	l
 SWITCH_H	threads/switch.h	18;"	d
+SYNCHCONSOLE_H	userprog/synchconsole.h	4;"	d
 SYNCHDISK_H	filesys/synchdisk.h	12;"	d
 SYNCHLIST_H	threads/synchlist.h	12;"	d
 SYNCH_H	threads/synch.h	18;"	d
@@ -644,6 +662,7 @@ StackSize	bin/coff2flat.c	31;"	d	file:
 StackSize	threads/thread.h	56;"	d
 Start	threads/thread.cc	/^Thread::Start (VoidFunctionPtr func, void *arg)$/;"	f	class:Thread
 StartProcess	userprog/progtest.cc	/^StartProcess (char *filename)$/;"	f
+StartUserThread	userprog/userthread.cc	/^StartUserThread(void* schmurtz){$/;"	f	file:
 StartupPC	threads/switch.h	119;"	d
 StartupPC	threads/switch.h	154;"	d
 StartupPC	threads/switch.h	189;"	d
@@ -659,10 +678,19 @@ StartupPCState	threads/switch.h	90;"	d
 Statistics	machine/stats.cc	/^Statistics::Statistics()$/;"	f	class:Statistics
 Statistics	machine/stats.h	/^class Statistics {$/;"	c
 SwapHeader	userprog/addrspace.cc	/^SwapHeader (NoffHeader * noffH)$/;"	f	file:
+SynchConsole	userprog/synchconsole.cc	/^SynchConsole::SynchConsole(const char *in, const char *out)$/;"	f	class:SynchConsole
+SynchConsole	userprog/synchconsole.h	/^class SynchConsole:dontcopythis {$/;"	c
+SynchConsoleTest	userprog/progtest.cc	/^SynchConsoleTest (const char *in, const char *out)$/;"	f
 SynchDisk	filesys/synchdisk.cc	/^SynchDisk::SynchDisk(const char* name)$/;"	f	class:SynchDisk
 SynchDisk	filesys/synchdisk.h	/^class SynchDisk:dontcopythis {$/;"	c
+SynchGetChar	userprog/synchconsole.cc	/^int SynchConsole::SynchGetChar()$/;"	f	class:SynchConsole
+SynchGetInt	userprog/synchconsole.cc	/^void SynchConsole::SynchGetInt(int *n)$/;"	f	class:SynchConsole
+SynchGetString	userprog/synchconsole.cc	/^void SynchConsole::SynchGetString(char *s, int n)$/;"	f	class:SynchConsole
 SynchList	threads/synchlist.cc	/^SynchList::SynchList ()$/;"	f	class:SynchList
 SynchList	threads/synchlist.h	/^class SynchList:dontcopythis$/;"	c
+SynchPutChar	userprog/synchconsole.cc	/^void SynchConsole::SynchPutChar(int ch)$/;"	f	class:SynchConsole
+SynchPutInt	userprog/synchconsole.cc	/^void SynchConsole::SynchPutInt(int n)$/;"	f	class:SynchConsole
+SynchPutString	userprog/synchconsole.cc	/^void SynchConsole::SynchPutString(const char *s)$/;"	f	class:SynchConsole
 SyscallException	machine/machine.h	/^		     SyscallException,      \/\/ A program executed a system call.$/;"	e	enum:ExceptionType
 SystemMode	machine/interrupt.h	/^enum MachineStatus {IdleMode, SystemMode, UserMode};$/;"	e	enum:MachineStatus
 SystemTick	machine/stats.h	63;"	d
@@ -677,6 +705,8 @@ Tell	machine/sysdep.cc	/^Tell(int fd)$/;"	f
 Test	userprog/bitmap.cc	/^BitMap::Test (int which)$/;"	f	class:BitMap
 Thread	threads/thread.cc	/^Thread::Thread (const char *threadName)$/;"	f	class:Thread
 Thread	threads/thread.h	/^class Thread:dontcopythis$/;"	c
+ThreadCreate	test/start.S	/^ThreadCreate:$/;"	l
+ThreadExit	test/start.S	/^ThreadExit:$/;"	l
 ThreadFinish	threads/thread.cc	/^ThreadFinish ()$/;"	f	file:
 ThreadPrint	threads/thread.cc	/^ThreadPrint (void *arg)$/;"	f
 ThreadRoot	threads/switch.S	/^#define ThreadRoot _ThreadRoot$/;"	d
@@ -700,6 +730,7 @@ TranslationEntry	machine/translate.h	/^class TranslationEntry {$/;"	c
 Traptrace	bin/disasm.c	/^int TRACE, Traptrace, Regtrace;$/;"	v
 Traptrace	bin/main.c	/^int TRACE, Traptrace, Regtrace;$/;"	v
 TypeToReg	machine/mipssim.cc	/^TypeToReg(RegType reg, Instruction *instr)$/;"	f	file:
+USERTHREAD_H	userprog/userthread.h	4;"	d
 USER_START_ADDRESS	userprog/syscall.h	18;"	d
 UTILITY_H	threads/utility.h	24;"	d
 UnBlockUserAbort	machine/sysdep.cc	/^UnBlockUserAbort(void)$/;"	f
@@ -744,6 +775,7 @@ WriteBack	userprog/bitmap.cc	/^BitMap::WriteBack (OpenFile * file)$/;"	f	class:B
 WriteDone	machine/console.cc	/^Console::WriteDone()$/;"	f	class:Console
 WriteDoneHandler	network/post.cc	/^static void WriteDoneHandler(void *arg)$/;"	f	file:
 WriteDoneHandler	userprog/progtest.cc	/^WriteDoneHandler (void *arg)$/;"	f	file:
+WriteDoneHandler	userprog/synchconsole.cc	/^static void WriteDoneHandler(void *arg) { (void) arg; writeDone->V(); }$/;"	f	file:
 WriteFile	machine/sysdep.cc	/^WriteFile(int fd, const void *buffer, int nBytes)$/;"	f
 WriteMem	machine/translate.cc	/^Machine::WriteMem(int addr, int size, int value)$/;"	f	class:Machine
 WriteRegister	machine/machine.cc	/^void Machine::WriteRegister(int num, int value)$/;"	f	class:Machine
@@ -804,6 +836,9 @@ chanceToWork	machine/network.h	/^    double chanceToWork;	\/\/ Likelihood packet
 code	bin/noff.h	/^   Segment code;		\/* executable code segment *\/ $/;"	m	struct:noffHeader
 column	bin/out.c	/^static column = 1;$/;"	v	file:
 console	userprog/progtest.cc	/^static Console *console;$/;"	v	file:
+console	userprog/synchconsole.h	/^		Console *console;$/;"	m	class:SynchConsole
+copyStringFromMachine	userprog/exception.cc	/^int copyStringFromMachine(int from, char *to, unsigned size)$/;"	f
+copyStringToMachine	userprog/exception.cc	/^int copyStringToMachine(int to, char *from, unsigned size)$/;"	f
 copyright	threads/copyright.h	/^static const char *copyright =$/;"	v
 cprmask	bin/coff.h	/^        int     cprmask[4];     \/* co-processor register masks          *\/$/;"	m	struct:aouthdr
 cstore	bin/int.h	29;"	d
@@ -823,6 +858,8 @@ disasm	bin/disasm.c	/^disasm(startpc, argc, argv)$/;"	f
 disk	filesys/synchdisk.h	/^    Disk *disk;		  		\/\/ Raw disk device$/;"	m	class:SynchDisk
 divRoundDown	threads/utility.h	39;"	d
 divRoundUp	threads/utility.h	40;"	d
+do_ThreadCreate	userprog/userthread.cc	/^do_ThreadCreate(int f, int arg)$/;"	f
+do_ThreadExit	userprog/userthread.cc	/^do_ThreadExit(){$/;"	f
 dontcopythis	threads/utility.h	/^		dontcopythis() {};$/;"	f	class:dontcopythis
 dontcopythis	threads/utility.h	/^class dontcopythis {$/;"	c
 dsize	bin/coff.h	/^        int     dsize;          \/* initialized data "  "                *\/$/;"	m	struct:aouthdr
@@ -927,8 +964,14 @@ main	bin/coff2noff.c	/^int main (int argc, char **argv)$/;"	f
 main	bin/disasm.c	/^main(argc, argv)$/;"	f
 main	bin/main.c	/^main(argc, argv)$/;"	f
 main	bin/out.c	/^main(argc,argv)$/;"	f
+main	test/getchar.c	/^int main()$/;"	f
+main	test/getint.c	/^int main()$/;"	f
+main	test/getstring.c	/^int main()$/;"	f
 main	test/halt.c	/^main ()$/;"	f
 main	test/matmult.c	/^main ()$/;"	f
+main	test/putchar.c	/^int main()$/;"	f
+main	test/putint.c	/^int main()$/;"	f
+main	test/putstring.c	/^int main()$/;"	f
 main	test/shell.c	/^main ()$/;"	f
 main	test/sort.c	/^main ()$/;"	f
 main	threads/main.cc	/^main (int argc, char **argv)$/;"	f
@@ -993,6 +1036,9 @@ pending	machine/interrupt.h	/^    List *pending;		\/\/ the list of interrupts sc
 physicalPage	machine/translate.h	/^    unsigned int physicalPage; 	\/\/ The page number in real memory (relative to the$/;"	m	class:TranslationEntry
 pktHdr	network/post.h	/^     PacketHeader pktHdr;	\/\/ Header appended by Network$/;"	m	class:Mail
 postOffice	threads/system.cc	/^PostOffice *postOffice;$/;"	v
+print	test/putchar.c	/^void print(char c, int n)$/;"	f
+print	test/putint.c	/^void print(int n)$/;"	f
+print	test/putstring.c	/^void print(char *c)$/;"	f
 print_reloc	bin/out.c	/^print_reloc(vaddr,i,j)$/;"	f
 print_section	bin/out.c	/^print_section(i)$/;"	f
 printf	bin/out.c	190;"	d	file:
@@ -1007,6 +1053,7 @@ rd	machine/machine.h	/^    unsigned char rs, rt, rd;$/;"	m	class:Instruction
 rdatahead	bin/disasm.c	/^static SCNHDR texthead, rdatahead, datahead, sdatahead, sbsshead, bsshead;$/;"	v	file:
 rdatahead	bin/main.c	/^static SCNHDR texthead, rdatahead, datahead, sdatahead, sbsshead, bsshead;$/;"	v	file:
 readAvail	userprog/progtest.cc	/^static Semaphore *readAvail;$/;"	v	file:
+readAvail	userprog/synchconsole.cc	/^static Semaphore *readAvail;$/;"	v	file:
 readFileNo	machine/console.h	/^    int readFileNo;			\/\/ UNIX file emulating the keyboard $/;"	m	class:Console
 readHandler	machine/console.h	/^    VoidFunctionPtr readHandler; 	\/\/ Interrupt handler to call when $/;"	m	class:Console
 readHandler	machine/network.h	/^    VoidFunctionPtr readHandler;  \/\/ Interrupt handler, signalling packet has $/;"	m	class:Network
@@ -1044,6 +1091,9 @@ s_size	bin/coff.h	/^        int             s_size;         \/* section size *\/
 s_vaddr	bin/coff.h	/^        int             s_vaddr;        \/* virtual address *\/$/;"	m	struct:scnhdr
 sbsshead	bin/disasm.c	/^static SCNHDR texthead, rdatahead, datahead, sdatahead, sbsshead, bsshead;$/;"	v	file:
 sbsshead	bin/main.c	/^static SCNHDR texthead, rdatahead, datahead, sdatahead, sbsshead, bsshead;$/;"	v	file:
+scan	test/getchar.c	/^void scan()$/;"	f
+scan	test/getint.c	/^void scan()$/;"	f
+scan	test/getstring.c	/^void scan()$/;"	f
 scheduler	threads/system.cc	/^Scheduler *scheduler;		\/\/ the ready list$/;"	v
 scnhdr	bin/coff.h	/^struct scnhdr {$/;"	s
 scnhdr	bin/out.c	/^struct scnhdr scnhdr[MAXSCNS];$/;"	v	typeref:struct:scnhdr
@@ -1090,6 +1140,7 @@ symbol_type	bin/out.c	/^char *symbol_type[] = {$/;"	v
 symbols	bin/out.c	/^EXTR symbols[MAXSYMS];$/;"	v
 symhdr	bin/out.c	/^HDRR symhdr;$/;"	v
 synchDisk	threads/system.cc	/^SynchDisk *synchDisk;$/;"	v
+synchconsole	threads/system.cc	/^SynchConsole *synchconsole;$/;"	v
 systemTicks	machine/stats.h	/^  long long systemTicks;	\/\/ Time spent executing system code$/;"	m	class:Statistics
 system_break	bin/system.c	/^system_break()$/;"	f
 system_trap	bin/system.c	/^system_trap()$/;"	f
@@ -1126,6 +1177,7 @@ virtualPage	machine/translate.h	/^    unsigned int virtualPage;  	\/\/ The page 
 vstamp	bin/coff.h	/^        short   vstamp;         \/* version stamp                        *\/$/;"	m	struct:aouthdr
 when	machine/interrupt.h	/^    long long when;		\/\/ When the interrupt is supposed to fire$/;"	m	class:PendingInterrupt
 writeDone	userprog/progtest.cc	/^static Semaphore *writeDone;$/;"	v	file:
+writeDone	userprog/synchconsole.cc	/^static Semaphore *writeDone;$/;"	v	file:
 writeFileNo	machine/console.h	/^    int writeFileNo;			\/\/ UNIX file emulating the display$/;"	m	class:Console
 writeHandler	machine/console.h	/^    VoidFunctionPtr writeHandler; 	\/\/ Interrupt handler to call when $/;"	m	class:Console
 writeHandler	machine/network.h	/^    VoidFunctionPtr writeHandler; \/\/ Interrupt handler, signalling next packet $/;"	m	class:Network
@@ -1148,6 +1200,7 @@ z	threads/switch.S	/^#define z       $0      \/* zero register *\/$/;"	d
 ~PostOffice	network/post.cc	/^PostOffice::~PostOffice()$/;"	f	class:PostOffice
 ~Scheduler	threads/scheduler.cc	/^Scheduler::~Scheduler ()$/;"	f	class:Scheduler
 ~Semaphore	threads/synch.cc	/^Semaphore::~Semaphore ()$/;"	f	class:Semaphore
+~SynchConsole	userprog/synchconsole.cc	/^SynchConsole::~SynchConsole()$/;"	f	class:SynchConsole
 ~SynchDisk	filesys/synchdisk.cc	/^SynchDisk::~SynchDisk()$/;"	f	class:SynchDisk
 ~SynchList	threads/synchlist.cc	/^SynchList::~SynchList ()$/;"	f	class:SynchList
 ~Thread	threads/thread.cc	/^Thread::~Thread ()$/;"	f	class:Thread

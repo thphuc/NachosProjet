@@ -41,7 +41,7 @@ StartUserThread(void* schmurtz){
 void 
 do_ThreadExit(){
 
-	currentThread->Finish();
+	currentThread->Finish(); // c'est fini
 }
 
 #endif // CHANGED
