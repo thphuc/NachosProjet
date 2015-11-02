@@ -24,10 +24,10 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
-#include "userthread.h"
 
 #ifdef CHANGED
 
+#include "userthread.h"
 #include <iostream>
 
 using namespace std;
@@ -100,7 +100,7 @@ ExceptionHandler (ExceptionType which)
 		{
 			DEBUG ('s', "exit\n");
 			int exitCode = machine->ReadRegister (4);
-			if(!exitCode)
+			if (!exitCode)
 				cout << "EXIT_SUCCESS (" << exitCode << ")" << endl;
 			else
 				cout << "EXIT_FAILURE (" << exitCode << ")" << endl;
@@ -111,7 +111,7 @@ ExceptionHandler (ExceptionType which)
 		{
 			DEBUG ('s', "putChar\n");
 			int c = machine->ReadRegister (4);
-		    synchconsole->SynchPutChar(c);
+		    synchconsole->SynchPutChar (c);
 		    break;
 		}
 		case SC_PutString:
@@ -122,22 +122,22 @@ ExceptionHandler (ExceptionType which)
 			int nb_char = MAX_STRING_SIZE; 								// nombre de caractere dans le buffer
 																		// que l'on initialise a taille max du buffer pour 
 																		// rentrer dans le while
-			char *buffer = (char *)malloc(sizeof(*buffer) * MAX_STRING_SIZE); // creation buffer de taille max
+			char *buffer = (char *) malloc (sizeof (*buffer) * MAX_STRING_SIZE); // creation buffer de taille max
 			int i = 0;													// permet de decaler d'un buffer dans la chaine MIPS
-			while(nb_char == MAX_STRING_SIZE)
+			while (nb_char == MAX_STRING_SIZE)
 			{
-				nb_char = copyStringFromMachine(from + i, buffer, MAX_STRING_SIZE); // on decale la tete de lecture
+				nb_char = copyStringFromMachine (from + i, buffer, MAX_STRING_SIZE); // on decale la tete de lecture
 				i += nb_char;
-				synchconsole->SynchPutString(buffer);
+				synchconsole->SynchPutString (buffer);
 			}
-			free(buffer); // on desalloue le buffer
+			free (buffer); // on desalloue le buffer
 			break;
 		}
 		case SC_GetChar:
 		{
 			DEBUG ('s', "getChar\n");
 			int c = synchconsole->SynchGetChar();
-			if(c != '\0' || c != '\n' || c != EOF)
+			if (c != '\0' || c != '\n' || c != EOF)
 				machine->WriteRegister (2, c);
 			else
 				interrupt->Halt ();
@@ -152,15 +152,15 @@ ExceptionHandler (ExceptionType which)
 																		// tableau de char dans test/getstring.c)
 			int i = 0;
 			int nb_char = MAX_STRING_SIZE;
-			char *buffer = (char *)malloc(sizeof(*buffer) * MAX_STRING_SIZE);
-			while(nb_char == MAX_STRING_SIZE && i < size)
+			char *buffer = (char *) malloc (sizeof (*buffer) * MAX_STRING_SIZE);
+			while (nb_char == MAX_STRING_SIZE && i < size)
 			{
-				synchconsole->SynchGetString(buffer, MAX_STRING_SIZE);	// on rempli le buffer avec la chaine de caractere 
+				synchconsole->SynchGetString (buffer, MAX_STRING_SIZE);	// on rempli le buffer avec la chaine de caractere 
 																		// saisie par l'utilisateur
-				nb_char = copyStringToMachine(to + i, buffer, MAX_STRING_SIZE);	// on decale la tete d'ecriture
+				nb_char = copyStringToMachine (to + i, buffer, MAX_STRING_SIZE);	// on decale la tete d'ecriture
 				i += nb_char;
 			}
-			free(buffer); // on desalloue le buffer
+			free (buffer); // on desalloue le buffer
 			break;
 		}
 		case SC_PutInt:
@@ -175,8 +175,8 @@ ExceptionHandler (ExceptionType which)
 			DEBUG ('s', "getInt\n");
 			int n;
 			int addr = machine->ReadRegister (4);
-			synchconsole->SynchGetInt(&n);
-			machine->WriteMem(addr, 4, n); // on ecrit 4 octets (taille d'un int)
+			synchconsole->SynchGetInt (&n);
+			machine->WriteMem (addr, 4, n); // on ecrit 4 octets (taille d'un int)
 			break;
 		}
 		case SC_ThreadCreate:
@@ -184,13 +184,13 @@ ExceptionHandler (ExceptionType which)
 			DEBUG ('s', "threadCreate\n");
 			int f = machine->ReadRegister (4);
 			int arg = machine->ReadRegister (5);
-			do_ThreadCreate(f, arg);
+			do_ThreadCreate (f, arg);
 			break;
 		}
 		case SC_ThreadExit:
 		{
 			DEBUG ('s', "threadExit\n");
-			do_ThreadExit();
+			do_ThreadExit ();
 			break;
 		}
 
@@ -227,32 +227,32 @@ ExceptionHandler (ExceptionType which)
 
 // met dans un tableau de char (to), de taille size, une serie de caractere
 // retourne le nombre de caractere placer dans le tableau
-int copyStringFromMachine(int from, char *to, unsigned size)
+int copyStringFromMachine (int from, char *to, unsigned size)
 {
 	int value;
 	unsigned int i = 0;
-	while(to[i] != '\0' && i < size)
+	while (to[i] != '\0' && i < size)
 	{
-		machine->ReadMem(from + i, 1, &value);
+		machine->ReadMem (from + i, 1, &value);
 		to[i] = (char) value;
-		if(to[i] == '\0') break; // si la chaine de caractere est < size
+		if (to[i] == '\0') break; // si la chaine de caractere est < size
 		i++;
 	}
 	return i;
 }
 
 // ecrit les caracteres du buffer from a partir de l'espace memoir to
-int copyStringToMachine(int to, char *from, unsigned size)
+int copyStringToMachine (int to, char *from, unsigned size)
 {
 	int value;
 	unsigned int i = 0;
-	while(from[i] != '\0' && from[i] != '\n' && i < size)
+	while (from[i] != '\0' && from[i] != '\n' && i < size)
 	{
 		value = (int) from[i];
-		machine->WriteMem(to + i, 1, value);
+		machine->WriteMem (to + i, 1, value);
 		i++;
 	}
-	machine->WriteMem(to + i, 1, '\0');
+	machine->WriteMem (to + i, 1, '\0');
 	return i;
 }
 

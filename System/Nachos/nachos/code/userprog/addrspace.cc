@@ -200,9 +200,9 @@ AddrSpace::RestoreState ()
 #ifdef CHANGED
 
 int
-AddrSpace::AllocateUserStack()
+AddrSpace::AllocateUserStack ()
 {
-    return (numPages*PageSize - 256)-16;
+    return (numPages * PageSize - 256) - 16;
 }
 
-#endif //CHANGED
+#endif // CHANGED

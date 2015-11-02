@@ -35,9 +35,9 @@ class AddrSpace:dontcopythis
 
 #ifdef CHANGED
 
-    int AllocateUserStack(); // Return the top adress of the stack
+    int AllocateUserStack (); // Return the top adress of the stack
 
-#endif //CHANGED 
+#endif // CHANGED 
 
   private:
       TranslationEntry * pageTable;	// Assume linear page table translation
