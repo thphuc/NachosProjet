@@ -6,8 +6,9 @@ void print(char c, int n)
 {
 	int i;
 #if 1
-	for(i=0; i<n;i++){
-		PutChar(c+i);
+	for(i = 0; i < n; i++)
+	{
+		PutChar(c + i);
 	}
 	PutChar('\n');
 #endif
@@ -15,7 +16,7 @@ void print(char c, int n)
 
 int main()
 {
-	print('a',4);
+	print('a', 4);
 	return 0;
 }
 
