@@ -4,6 +4,7 @@
 
 void print(char c)
 {
+	PutString("test print\n");
 #if 1
 	PutChar(c);
 	PutChar('\n');
@@ -13,7 +14,8 @@ void print(char c)
 
 int main()
 {
-	ThreadCreate(print, 'a');
+	PutString("test main\n");
+	ThreadCreate(print, 'r');
 	//PutChar('\n'); // erreur dans la partie I
 	return 0;
 }
