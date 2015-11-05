@@ -1,4 +1,5 @@
 #ifdef CHANGED
+
 #include "userthread.h"
 #include "thread.h"
 #include "addrspace.h"
@@ -9,7 +10,7 @@ static void StartUserThread (void *schmurtz);
 int 
 do_ThreadCreate (int f, int arg)
 {
-	int *schmurtz = new int[2];
+	int *schmurtz = (int *) malloc (sizeof (*schmurtz) * 2);
 	schmurtz[0] = f;
 	schmurtz[1] = arg;
 	Thread *newThread = new Thread ("nouveauThread");
@@ -36,7 +37,6 @@ StartUserThread (void *schmurtz)
 
 	machine->Run ();
 	free (schmurtz);
-
 }
 
 void 

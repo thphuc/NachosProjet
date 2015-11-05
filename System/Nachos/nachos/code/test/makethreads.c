@@ -2,17 +2,19 @@
 
 #include "syscall.h"
 
-void print(char *s)
+void print(char c)
 {
 #if 1
-	PutString(s);
+	PutChar(c);
+	PutChar('\n');
 #endif
 	ThreadExit();
 }
 
 int main()
 {
-	ThreadCreate(print, "Test makeThread\n");
+	ThreadCreate(print, 'a');
+	//PutChar('\n'); // erreur dans la partie I
 	return 0;
 }
 
