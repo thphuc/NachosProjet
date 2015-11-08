@@ -183,16 +183,13 @@ ExceptionHandler (ExceptionType which)
 		{
 			DEBUG ('s', "threadCreate\n");
 			int f = machine->ReadRegister (4);
-			cout << "registre 4 f " << f << endl;
 			int arg = machine->ReadRegister (5);
-			cout << "registre 5 arg " << arg << " " << (char) arg << endl;
 			do_ThreadCreate (f, arg);
 			break;
 		}
 		case SC_ThreadExit:
 		{
 			DEBUG ('s', "threadExit\n");
-			cout << "thread exit" << endl;
 			do_ThreadExit ();
 			break;
 		}

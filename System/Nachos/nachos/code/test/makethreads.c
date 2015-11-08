@@ -4,7 +4,7 @@
 
 void print(char *c)
 {
-	PutString("test print thread\n");
+	PutChar('\n');
 	PutString(c);
 #if 1
 	PutChar('\n');
@@ -13,12 +13,26 @@ void print(char *c)
 	ThreadExit();
 }
 
+void print2(char *c)
+{
+	PutChar('\n');
+	PutString(c);
+	PutChar('\n');
+	ThreadExit();
+}
+
 int main()
 {
 	ThreadCreate(print, "test thread 0");
-	//PutChar('\n'); // erreur dans la partie I
+	//ThreadCreate(print2, "test thread 1");
+	/*ThreadCreate(print, "test thread 2");
+	ThreadCreate(print, "test thread 3");*/
+	//ThreadCreate(print, "test thread 4");
+	PutChar('-');
+	PutChar('t');
+	PutChar('-');
+	PutChar('\n');
 	ThreadExit();
-	return 0;
 }
 
 #endif // CHANGED

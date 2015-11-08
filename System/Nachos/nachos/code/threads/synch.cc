@@ -71,7 +71,7 @@ Semaphore::P ()
 	  queue->Append ((void *) currentThread);	// so go to sleep
 	  currentThread->Sleep ();
       }
-    value--;			// semaphore available, 
+    value--;			// semaphore available,
     // consume its value
 
     (void) interrupt->SetLevel (oldLevel);	// re-enable interrupts
@@ -103,25 +103,67 @@ Semaphore::V ()
 // the test case in the network assignment won't work!
 Lock::Lock (const char *debugName)
 {
-    (void) debugName;
-    /* TODO */
-    ASSERT(FALSE);
+
+#ifdef CHANGED
+
+    name = debugName;
+    busy = false;
+    queue = new List;
+
+#endif // CHANGED
+
 }
 
 Lock::~Lock ()
 {
+
+#ifdef CHANGED
+
+    delete queue;
+
+#endif // CHANGED
+
 }
+
 void
 Lock::Acquire ()
 {
-    /* TODO */
-    ASSERT(FALSE);
+
+#ifdef CHANGED
+
+    IntStatus oldLevel = interrupt->SetLevel (IntOff);	// disable interrupts
+
+    while (busy)
+    {				// semaphore not available
+        queue->Append ((void *) currentThread);	// so go to sleep
+        currentThread->Sleep ();
+    }
+    busy = true;			// semaphore available,
+    // consume its value
+
+    (void) interrupt->SetLevel (oldLevel);	// re-enable interrupts
+
+#endif // CHANGED
+
 }
+
 void
 Lock::Release ()
 {
-    /* TODO */
-    ASSERT(FALSE);
+
+#ifdef CHANGED
+
+    Thread *thread;
+    IntStatus oldLevel = interrupt->SetLevel (IntOff);
+
+    thread = (Thread *) queue->Remove ();
+    if (thread != NULL)		// make thread ready, consuming the V immediately
+	scheduler->ReadyToRun (thread);
+    busy = false;
+    (void) interrupt->SetLevel (oldLevel);
+
+#endif // CHANGED
+
 }
 
 Condition::Condition (const char *debugName)

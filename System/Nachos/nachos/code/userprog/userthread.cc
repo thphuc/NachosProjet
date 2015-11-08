@@ -4,12 +4,16 @@
 #include "thread.h"
 #include "addrspace.h"
 #include "system.h"
+#include "synch.h"
 
 static void StartUserThread (void *schmurtz);
+static int cptThread = 0;
 
 int
 do_ThreadCreate (int f, int arg)
 {
+	cptThread++;
+	DEBUG ('x', "[DEBUG] cptThread: %d\n", cptThread);
 	int *schmurtz = (int *) malloc (sizeof (*schmurtz) * 2);
 	schmurtz[0] = f;
 	schmurtz[1] = arg;
@@ -26,7 +30,7 @@ StartUserThread (void *schmurtz)
 	for (int i = 0; i < NumTotalRegs; i++)
 		machine->WriteRegister (i, 0);
 
-	int topAdress = currentThread->space->AllocateUserStack ();
+	int topAdress = currentThread->space->AllocateUserStack (cptThread);
 
 	machine->WriteRegister (PCReg, f);
 	DEBUG ('x', "[DEBUG] Function: %d\n", f);
@@ -47,6 +51,17 @@ StartUserThread (void *schmurtz)
 void 
 do_ThreadExit ()
 {
+
+	DEBUG ('x', "[DEBUG] cptThread Exit: %d\n", cptThread);
+
+	if(cptThread > 0)
+	{
+		cptThread--;
+	}
+	else
+	{
+		interrupt->Halt();
+	}
 	currentThread->Finish ();
 }
 

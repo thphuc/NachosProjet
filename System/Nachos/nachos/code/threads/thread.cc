@@ -54,7 +54,6 @@ Thread::Thread (const char *threadName)
     // DelayedLoad is called !!!
     userRegisters[LoadReg] = 0;
     userRegisters[LoadValueReg] = 0;
-
 #endif
 }
 
@@ -414,5 +413,3 @@ Thread::RestoreUserState ()
 	machine->WriteRegister (i, userRegisters[i]);
 }
 #endif
-
-

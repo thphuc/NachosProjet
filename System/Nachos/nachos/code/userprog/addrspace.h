@@ -17,7 +17,15 @@
 #include "filesys.h"
 #include "translate.h"
 
+#ifdef CHANGED
+
+#include "bitmap.h"
+
+#endif // CHANGED
+
 #define UserStacksAreaSize		1024	// increase this as necessary!
+
+class Semaphore;
 
 class AddrSpace:dontcopythis
 {
@@ -35,7 +43,7 @@ class AddrSpace:dontcopythis
 
 #ifdef CHANGED
 
-    int AllocateUserStack (); // Return the top adress of the stack
+    int AllocateUserStack (int pos); // Return the top adress of the stack
 
 #endif // CHANGED 
 
@@ -44,6 +52,14 @@ class AddrSpace:dontcopythis
     // for now!
     unsigned int numPages;	// Number of pages in the virtual 
     // address space
+
+/*
+#ifdef CHANGED
+
+    BitMap *bitMap; // BiMap pour gérer la pile
+
+#endif // CHANGED
+*/
 };
 
 #endif // ADDRSPACE_H

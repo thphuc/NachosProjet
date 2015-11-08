@@ -7,6 +7,8 @@
 
 static Semaphore *readAvail;
 static Semaphore *writeDone;
+static Lock *mutexRead;
+static Lock *mutexWrite;
 
 static void ReadAvailHandler(void *arg) { (void) arg; readAvail->V(); }
 static void WriteDoneHandler(void *arg) { (void) arg; writeDone->V(); }
@@ -15,6 +17,8 @@ SynchConsole::SynchConsole(const char *in, const char *out)
 {
 	readAvail = new Semaphore("read avail", 0);
 	writeDone = new Semaphore("write done", 0);
+	mutexRead = new Lock("mutexRead");
+	mutexWrite = new Lock("mutexWrite");
 	console = new Console(in, out, ReadAvailHandler, WriteDoneHandler, 0);
 }
 
@@ -23,18 +27,30 @@ SynchConsole::~SynchConsole()
 	delete console;
 	delete writeDone;
 	delete readAvail;
+	delete mutexRead;
+	delete mutexWrite;
 }
 
 void SynchConsole::SynchPutChar(int ch)
 {
+	mutexWrite->Acquire();
+
 	console->PutChar(ch);
 	writeDone->P();
+
+	mutexWrite->Release();
 }
 
 int SynchConsole::SynchGetChar()
 {
+	mutexRead->Acquire();
+
 	readAvail->P();
-	return console->GetChar();
+	int consoleGetChar = console->GetChar();
+
+	mutexRead->Release();
+
+	return consoleGetChar;
 }
 
 void SynchConsole::SynchPutString(const char *s)
