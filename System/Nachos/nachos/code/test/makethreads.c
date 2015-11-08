@@ -2,11 +2,12 @@
 
 #include "syscall.h"
 
-void print(char c)
+void print(char *c)
 {
-	PutString("test print\n");
+	PutString("test print thread\n");
+	PutString(c);
 #if 1
-	PutChar(c);
+	PutChar('\n');
 	PutChar('\n');
 #endif
 	ThreadExit();
@@ -14,9 +15,9 @@ void print(char c)
 
 int main()
 {
-	PutString("test main\n");
-	ThreadCreate(print, 'r');
+	ThreadCreate(print, "test thread 0");
 	//PutChar('\n'); // erreur dans la partie I
+	ThreadExit();
 	return 0;
 }
 

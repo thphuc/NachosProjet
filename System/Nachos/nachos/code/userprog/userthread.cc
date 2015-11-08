@@ -7,10 +7,20 @@
 
 static void StartUserThread (void *schmurtz);
 
+int
+do_ThreadCreate (int f, int arg)
+{
+	int *schmurtz = (int *) malloc (sizeof (*schmurtz) * 2);
+	schmurtz[0] = f;
+	schmurtz[1] = arg;
+	Thread *newThread = new Thread ("nouveauThread");
+	newThread->Start (StartUserThread, schmurtz);	
+	return 0;
+}
+
 static void
 StartUserThread (void *schmurtz)
 {
-	printf("StartUserThread\n");
 	int f = ((int *) schmurtz)[0];
 	int arg = ((int *) schmurtz)[1];
 	for (int i = 0; i < NumTotalRegs; i++)
@@ -18,39 +28,26 @@ StartUserThread (void *schmurtz)
 
 	int topAdress = currentThread->space->AllocateUserStack ();
 
-	machine->WriteRegister (StackReg, topAdress);
-	DEBUG ('x', "[DEBUG] Adress: %d\n", topAdress);
-	printf ("[DEBUG] Adress: %d\n", topAdress);
 	machine->WriteRegister (PCReg, f);
 	DEBUG ('x', "[DEBUG] Function: %d\n", f);
-	printf ("[DEBUG] Function: %d\n", f);
-	machine->WriteRegister (NextPCReg, machine->ReadRegister(PCReg) + 4);
-	DEBUG ('x', "[DEBUG] NextPCReg: %d\n", machine->ReadRegister(PCReg) + 4);	
-	printf ("[DEBUG] NextPCReg: %d\n", machine->ReadRegister(PCReg) + 4);	
+
 	machine->WriteRegister (4, arg);
 	DEBUG ('x', "[DEBUG] Arg: %d\n", arg);
-	printf ("[DEBUG] Arg: %d\n", arg);
+
+	machine->WriteRegister (NextPCReg, machine->ReadRegister(PCReg) + 4);
+	DEBUG ('x', "[DEBUG] NextPCReg: %d\n", machine->ReadRegister(PCReg) + 4);
+
+	machine->WriteRegister (StackReg, topAdress);
+	DEBUG ('x', "[DEBUG] Adress: %d\n", topAdress);
 
 	machine->Run ();
 	free (schmurtz);
 }
 
-int 
-do_ThreadCreate (int f, int arg)
-{
-	int *schmurtz = (int *) malloc (sizeof (*schmurtz) * 2);
-	schmurtz[0] = f;
-	schmurtz[1] = arg;
-	Thread *newThread = new Thread ("nouveauThread");
-	newThread->Start (StartUserThread, schmurtz);
-	printf("test\n");	
-	return 0;
-}
-
 void 
 do_ThreadExit ()
 {
-	currentThread->Finish (); // c'est fini
+	currentThread->Finish ();
 }
 
 #endif // CHANGED
