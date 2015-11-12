@@ -51,7 +51,6 @@ StartUserThread (void *schmurtz)
 void 
 do_ThreadExit ()
 {
-
 	DEBUG ('x', "[DEBUG] cptThread Exit: %d\n", cptThread);
 
 	if(cptThread > 0)
