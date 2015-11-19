@@ -43,6 +43,7 @@ PostOffice *postOffice;
 
 #ifdef USER_PROGRAM
 SynchConsole *synchconsole;
+PageProvider *pageprovider;
 #endif
 
 #endif // CHANGED
@@ -179,6 +180,13 @@ Initialize (int argc, char **argv)
 
 #ifdef USER_PROGRAM
     machine = new Machine (debugUserProg);	// this must come first
+
+#ifdef CHANGED
+
+    pageprovider = new PageProvider();
+
+#endif // CHANGED
+
 #endif
 
 #ifdef FILESYS
@@ -232,6 +240,8 @@ Cleanup ()
 #ifdef USER_PROGRAM
 	delete synchconsole;
 	synchconsole = NULL;
+    delete pageprovider;
+    pageprovider = NULL;
 #endif
 
 #endif // CHANGED
