@@ -20,7 +20,7 @@ int
 PageProvider::GetEmptyPage()
 {
 	int emptyPage = bitmapPage->Find();
-	ASSERT(emptyPage == -1);
+	ASSERT(emptyPage != -1);
 	void *adresse = &(machine->mainMemory[emptyPage * PageSize]);
 	memset(adresse, 0, PageSize);
 	return emptyPage;
