@@ -96,8 +96,17 @@ AddrSpace::AddrSpace (OpenFile * executable)
     pageTable = new TranslationEntry[numPages];
     for (i = 0; i < numPages; i++)
       {
-	  pageTable[i].physicalPage = i + 1;	// for now, phys page # = virtual page #
-	  pageTable[i].valid = TRUE;
+
+#ifdef CHANGED
+
+      //pageTable[i].physicalPage = i + 1;  // for now, phys page # = virtual page #
+      int emptypage = pageprovider->GetEmptyPage();
+      //int emptypage = pageprovider->GetRandomEmptyPage(); // pour debugger
+	  pageTable[i].physicalPage = emptypage;
+
+#endif // CHANGED
+
+      pageTable[i].valid = TRUE;
 	  pageTable[i].use = FALSE;
 	  pageTable[i].dirty = FALSE;
 	  pageTable[i].readOnly = FALSE;	// if the code segment was entirely on 
@@ -108,14 +117,23 @@ AddrSpace::AddrSpace (OpenFile * executable)
 // then, copy in the code and data segments into memory
     if (noffH.code.size > 0)
       {
+
+#ifdef CHANGED
+
 	  DEBUG ('a', "Initializing code segment, at 0x%x, size 0x%x\n",
 		 noffH.code.virtualAddr, noffH.code.size);
       ReadAtVirtual(executable, noffH.code.virtualAddr, noffH.code.size, noffH.code.inFileAddr, pageTable, numPages);
 	  /*executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),
 	  		      noffH.code.size, noffH.code.inFileAddr);*/
+      
+#endif // CHANGED
+
       }
     if (noffH.initData.size > 0)
       {
+
+#ifdef CHANGED
+
 	  DEBUG ('a', "Initializing data segment, at 0x%x, size 0x%x\n",
 		 noffH.initData.virtualAddr, noffH.initData.size);
         ReadAtVirtual(executable, noffH.initData.virtualAddr, noffH.initData.size, noffH.initData.inFileAddr, pageTable, numPages);
@@ -123,6 +141,9 @@ AddrSpace::AddrSpace (OpenFile * executable)
 			      (machine->mainMemory
 			       [noffH.initData.virtualAddr]),
 			      noffH.initData.size, noffH.initData.inFileAddr);*/
+      
+#endif // CHANGED
+
       }
 
     DEBUG ('a', "Area for stacks at 0x%x, size 0x%x\n",
@@ -140,7 +161,16 @@ AddrSpace::~AddrSpace ()
 {
   // LB: Missing [] for delete
   // delete pageTable;
-  //delete untruc;
+
+#ifdef CHANGED
+
+  for(unsigned int i = 0; i < numPages; i++)
+  {
+    pageprovider->ReleasePage(pageTable[i].physicalPage);
+  }
+
+#endif // CHANGED
+
   delete [] pageTable;
   // End of modification
 }

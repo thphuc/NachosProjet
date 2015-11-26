@@ -9,7 +9,6 @@
 
 class PageProvider
 {
-
 private:
 	BitMap *bitmapPage;
 
@@ -21,6 +20,7 @@ public:
 	void ReleasePage(int page);
 	int NumAvailPage();
 
+	int GetRandomEmptyPage(); // debuggage
 };
 
 #endif // PAGEPROVIDER_H
