@@ -34,6 +34,7 @@ using namespace std;
 
 int copyStringFromMachine(int from, char *to, unsigned size);
 int copyStringToMachine(int to, char *from, unsigned size);
+static void StartProcess (void * space);
 
 #endif // CHANGED
 
@@ -193,6 +194,35 @@ ExceptionHandler (ExceptionType which)
 			do_ThreadExit ();
 			break;
 		}
+		case SC_ForkExec:
+		{
+			DEBUG ('s', "forkexec\n");
+
+			int taille_max_filename = 256;
+			int from = machine->ReadRegister (4);
+			char *filename = (char *) malloc (sizeof (*filename) * taille_max_filename);
+
+			copyStringFromMachine (from, filename, taille_max_filename);
+			//DEBUG ('s', "filename %s\n", filename);
+
+			Thread *t = new Thread("process");
+			OpenFile *executable = fileSystem->Open (filename);
+		    AddrSpace *space;
+
+		    if (executable == NULL)
+			{
+      			printf ("Unable to open file %s\n", filename);
+				return;
+			}
+
+		    space = new AddrSpace (executable);
+		    t->space = space;
+			free (filename);
+		    delete executable;      // close file
+		    t->Start(StartProcess, t->space);
+		    
+			break;
+		}
 
 #endif // CHANGED
 
@@ -254,6 +284,20 @@ int copyStringToMachine (int to, char *from, unsigned size)
 	}
 	machine->WriteMem (to + i, 1, '\0');
 	return i;
+}
+
+static void
+StartProcess (void * space)
+{
+	AddrSpace * adress; 
+	adress = (AddrSpace *) space;
+	adress->InitRegisters ();    // set the initial register values
+    adress->RestoreState (); // load page table register
+
+    machine->Run ();        // jump to the user progam
+    ASSERT (FALSE);     // machine->Run never returns;
+    // the address space exits
+    // by doing the syscall "exit"
 }
 
 #endif // CHANGED
