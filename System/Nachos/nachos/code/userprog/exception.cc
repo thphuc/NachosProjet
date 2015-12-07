@@ -293,6 +293,7 @@ StartProcess (void * space)
 	adress = (AddrSpace *) space;
 	adress->InitRegisters ();    // set the initial register values
     adress->RestoreState (); // load page table register
+    currentThread->space = adress;
 
     machine->Run ();        // jump to the user progam
     ASSERT (FALSE);     // machine->Run never returns;
