@@ -20,22 +20,22 @@ void print2(char *c)
 	PutChar('\n');
 	ThreadExit();
 }
-
+/*
 void reatThread(char c)
 {
     //if(ThreadCreate(
 }
-
+*/
 int main()
 {
-	/*ThreadCreate(print, "test thread 0");
+	ThreadCreate(print, "test thread 0");
 	PutChar('t');
 	PutChar('-');
-	PutChar('\n');*/
-	int i = 0;
+	PutChar('\n');
+	/*int i = 0;
 	for(i = 0; i < 30; i++);
 	    //creatThread('d');
-	ThreadExit();
+	ThreadExit();*/
 }
 
 #endif // CHANGED
